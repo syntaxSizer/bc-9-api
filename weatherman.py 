@@ -1,0 +1,28 @@
+import urllib3
+import json
+
+cities= ['Nairobi', 'Lagos', 'London']
+
+
+
+def get_details(city_name):
+	http = urllib3.PoolManager()
+	api = '2bc3e79bb974a007818864813f53fd35'
+	api_url = 'http://api.openweathermap.org/data/2.5/weather'
+	request = http.request(
+		'GET',
+		api_url,
+		fields= { 
+		'q': city_name,
+		'units':'metric',
+		'appid': api}
+		)
+	response = json.loads(request.data.decode('utf-8'))
+
+	return [response['weather'][0]['description'], response['main']['temp']]
+
+
+print("City\t\t\tDescription\t\t\tTemperature\n***********************************************")	
+for city_name in cities:
+	print city_name.ljust(15) , get_details(city_name)[0].ljust(20), str(get_details(city_name)[1]).ljust(10)
+		
