@@ -1,24 +1,22 @@
 import urllib3
 import json
 
-cities= ['Nairobi', 'Lagos', 'London']
-
+cities = ['Nairobi', 'Lagos', 'London']
+API = '2bc3e79bb974a007818864813f53fd35'
+API_URL = 'http://api.openweathermap.org/data/2.5/weather'
 
 
 def get_details(city_name):
 	http = urllib3.PoolManager()
-	api = '2bc3e79bb974a007818864813f53fd35'
-	api_url = 'http://api.openweathermap.org/data/2.5/weather'
-	request = http.request(
-		'GET',
-		api_url,
-		fields= { 
+	
+
+	request = http.request('GET', API_URL,
+		fields={
 		'q': city_name,
-		'units':'metric',
-		'appid': api}
+		'units': 'metric',
+		'appid': API}
 		)
 	response = json.loads(request.data.decode('utf-8'))
-
 	return [response['weather'][0]['description'], response['main']['temp']]
 
 
